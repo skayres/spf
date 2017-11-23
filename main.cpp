@@ -77,7 +77,7 @@ class router {
 
         void printRouterLinks(){
             for(int i=0; i<(this->linkCounter); i++){
-                cout << "Router link #" << i << " : " << "id: " << (links+i)->linkID << " cost: " << (links+i)->cost << endl;
+                cout << "Router link #" << i << " : " << "id: " << (links+i)->linkID << " cost: " << (links+i)->cost << "\n";
             }
         }
 
@@ -89,6 +89,17 @@ class router {
 
 bool isDirectlyConnected(router r1, router r2){
     for(int i=0; i<r1.getLinkCount(); i++){
+        for(int j=0; j<r2.getLinkCount(); j++){
+            if(r1.links[i].linkID == r2.links[j].linkID){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+router routerDirectlyConnected(router r, string link){
+    for(int i=0; i<r.getLinkCount(); i++){
         for(int j=0; j<r2.getLinkCount(); j++){
             if(r1.links[i].linkID == r2.links[j].linkID){
                 return true;
@@ -122,7 +133,7 @@ void walkGraph(router * _router){
         for (int j=0; j<n; j++){
             if(i!=j){
                 if(isDirectlyConnected(*(_router+i), *(_router+j))){
-                    //cout << _router[i].getName() << " is directly connected to " << _router[j].getName() << endl;
+                    //cout << _router[i].getName() << " is directly connected to " << _router[j].getName() << "\n";
                 }
             }
         }
@@ -206,8 +217,8 @@ int main()
             throw 404;
         }
         for (int i=0; i<routerCounter; i++){
-            cout << R[i].getName() << " Count of links: " << R[i].getLinkCount() << endl;
-            cout << "Links: " << endl;
+            cout << R[i].getName() << " Count of links: " << R[i].getLinkCount() << "\n";
+            cout << "Links: " << "\n";
             R[i].printRouterLinks();
         }
         spf(R);
