@@ -77,7 +77,7 @@ class router {
 
         void printRouterLinks(){
             for(int i=0; i<(this->linkCounter); i++){
-                cout << "Router link #" << i << " : " << "id: " << (links+i)->linkID << " cost: " << (links+i)->cost << "\n";
+                //cout << "Router link #" << i << " : " << "id: " << (links+i)->linkID << " cost: " << (links+i)->cost << "\n";
             }
         }
 
@@ -98,21 +98,23 @@ bool isDirectlyConnected(router r1, router r2){
     return false;
 }
 
-router routerDirectlyConnected(router r, string link){
-    for(int i=0; i<r.getLinkCount(); i++){
-        for(int j=0; j<r2.getLinkCount(); j++){
-            if(r1.links[i].linkID == r2.links[j].linkID){
-                return true;
+string routerDirectlyConnected(router * r, string routerName, int numRouters, string link){
+
+    for(int i=0; i<numRouters; i++){
+        if(r[i].getName()!= routerName){
+            for(int j=0; j<r[i].getLinkCount(); j++){
+                if((r[i].links[j]).linkID == link){
+                    return r[i].getName();
+                }
             }
         }
     }
-    return false;
 }
 
-void printAllRoutes(router _router, int _diff, string firstRouter){
+/*void printAllRoutes(router *_router, int _diff, string firstRouter){
 
     int n = sizeof(_router);
-    int ln = _router.getLinkCount();
+    int ln = _router->getLinkCount();
     int diff = _diff;
 
     for (int i=0; i<ln; i++){
@@ -123,7 +125,7 @@ void printAllRoutes(router _router, int _diff, string firstRouter){
             cout << " -> " << _router[diff].getName();
         }
     }
-}
+}*/
 
 void walkGraph(router * _router){
 
@@ -143,8 +145,20 @@ void walkGraph(router * _router){
 void spf(router * _router){
 
     int n = sizeof(_router);
-    walkGraph(_router);
-    printAllRoutes(_router, 0, "R1");
+    //walkGraph(_router);
+
+    for (int i=0; i<n; i++){
+        int ln = _router[i].getLinkCount();
+        for (int j=0; j<ln; j++){
+            string nameNeighbor = "";
+            nameNeighbor = routerDirectlyConnected(_router, _router[i].getName(), n, (_router[i].links[j]).linkID);
+            if (nameNeighbor != ""){
+                cout << "Router " << _router[i].getName() << " is directly connected to router " << nameNeighbor << " via link " << (_router[i].links[j]).linkID << endl;
+            }
+        }
+    }
+
+    //cout << "Router" routerDirectlyConnected(_router, "R1", n, "12");
 
 }
 
